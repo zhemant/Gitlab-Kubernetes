@@ -1,0 +1,41 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: nfs-client-provisioner
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: nfs-client-provisioner
+  template:
+    metadata:
+      labels:
+        app: nfs-client-provisioner
+    spec:
+      serviceAccountName: nfs-client-provisioner
+      containers:
+        - name: nfs-client-provisioner
+          image: gcr.io/k8s-staging-sig-storage/nfs-subdir-external-provisioner:v4.0.0
+          volumeMounts:
+            - name: nfs-client-root
+              mountPath: /persistentvolumes
+          env:
+            - name: PROVISIONER_NAME
+            # set the value to choice of provisioner name you want 
+            # same has to be used in storage class
+              value: example.com/nfs
+            - name: NFS_SERVER
+            # NFS server IP
+              value: "<server_ip>"
+            - name: NFS_PATH
+            # NFS Path set during nfs creation
+              value: <server_path>
+      volumes:
+        - name: nfs-client-root
+          nfs:
+            # NFS server IP
+            server: "<server_ip>"
+            # NFS path
+            path: <server_path>
