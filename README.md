@@ -82,6 +82,14 @@ sudo gitlab-ctl tail nginx
 
 # Install Gitlab Runner
 
+For ubuntu/debian via apt repository
+```sh
+curl -L "https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh" | sudo bash
+sudo apt update
+sudo apt-get install gitlab-runner
+```
+
+If apt repository is not available then following method can be used:
 ```sh
 curl -LJO "https://gitlab-runner-downloads.s3.amazonaws.com/latest/deb/gitlab-runner_amd64.deb"
 sudo dpkg -i gitlab-runner_amd64.deb
